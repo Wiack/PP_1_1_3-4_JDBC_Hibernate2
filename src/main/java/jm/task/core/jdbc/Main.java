@@ -13,15 +13,16 @@ public class Main {
         userService.createUsersTable();
 
         //Добавление 4 User(ов) ( User с именем – name добавлен в базу данных ).
-        userService.saveUser("Алла", "Полякова", (byte)10);
-        userService.saveUser("Борис", "Васильев", (byte)20);
-        userService.saveUser("Виктория", "Токарева", (byte)30);
-        userService.saveUser("Григорий", "Чернецов", (byte)40);
+        userService.saveUser("Алла", "Полякова", (byte) 10);
+        userService.saveUser("Борис", "Васильев", (byte) 20);
+        userService.saveUser("Виктория", "Токарева", (byte) 30);
+        userService.saveUser("Григорий", "Чернецов", (byte) 40);
 
         //Получение всех User из базы и вывод в консоль ( должен быть переопределен toString в классе User)
-        for (User i:userService.getAllUsers()) {
+        for (User i : userService.getAllUsers()) {
             System.out.println(i);
         }
+
 
         //Очистка таблицы User(ов)
         userService.cleanUsersTable();
