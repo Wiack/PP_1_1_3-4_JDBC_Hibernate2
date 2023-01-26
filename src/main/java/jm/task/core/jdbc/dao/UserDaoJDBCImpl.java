@@ -8,39 +8,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl extends Util implements UserDao {
-    private String sql;
+    private String create = "CREATE TABLE IF NOT EXISTS Users(id BIGINT NOT NULL AUTO_INCREMENT, name CHAR(30) NOT NULL, lastName CHAR(30) NOT NULL, age TINYINT, PRIMARY KEY (id));";
+    private String drop = "DROP TABLE IF EXISTS Users;";
+    private String save = "INSERT INTO Users (name, lastName, age) VALUES(?,?,?);";
+    private String remove = "DELETE FROM Users WHERE id=?;";
+    private String allUsers = "select * from users;";
+    private String clean = "delete from users;";
+
 
     public UserDaoJDBCImpl() {
 
     }
 
     @Override
-    public void createUsersTable() throws SQLException {
-        sql = "CREATE TABLE IF NOT EXISTS Users(id BIGINT NOT NULL AUTO_INCREMENT, name CHAR(30) NOT NULL, lastName CHAR(30) NOT NULL, age TINYINT, PRIMARY KEY (id));";
+    public void createUsersTable() {
 
-        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(create);) {
             preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
 
     }
 
     @Override
-    public void dropUsersTable() throws SQLException {
-        sql = "DROP TABLE IF EXISTS Users;";
+    public void dropUsersTable() {
 
-        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(drop);) {
             preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
 
     @Override
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
-        sql = "INSERT INTO Users (name, lastName, age) VALUES(?,?,?);";
+    public void saveUser(String name, String lastName, byte age) {
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(save);) {
 
 
             preparedStatement.setString(1, name);
@@ -49,29 +56,31 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
 
             preparedStatement.executeUpdate();
             System.out.println("User с именем – " + name + " добавлен в базу данных");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
 
     @Override
-    public void removeUserById(long id) throws SQLException {
-        sql = "DELETE FROM Users WHERE id=?;";
+    public void removeUserById(long id) {
 
-        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(remove)) {
             ;
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
 
-        sql = "select * from users;";
 
-        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(allUsers)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -85,15 +94,22 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
 
                 userList.add(user);
             }
-            return userList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        return userList;
     }
 
+
     @Override
-    public void cleanUsersTable() throws SQLException {
-        sql = "delete from users;";
-        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+    public void cleanUsersTable() {
+
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(clean);) {
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }

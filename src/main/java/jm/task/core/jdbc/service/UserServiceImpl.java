@@ -14,58 +14,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUsersTable() {
-        try {
-            userDaoJDBC.createUsersTable();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+         userDaoJDBC.createUsersTable();
+
 
     }
 
     @Override
     public void dropUsersTable() {
-        try {
-            userDaoJDBC.dropUsersTable();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        userDaoJDBC.dropUsersTable();
+
 
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        try {
-            userDaoJDBC.saveUser(name, lastName, age);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        userDaoJDBC.saveUser(name, lastName, age);
 
     }
 
     @Override
     public void removeUserById(long id) {
-        try {
-            userDaoJDBC.removeUserById(id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        userDaoJDBC.removeUserById(id);
     }
 
     @Override
     public List<User> getAllUsers() {
-        try {
-            return userDaoJDBC.getAllUsers();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return userDaoJDBC.getAllUsers();
     }
 
     @Override
     public void cleanUsersTable() {
-        try {
-            userDaoJDBC.cleanUsersTable();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        userDaoJDBC.cleanUsersTable();
     }
 }
