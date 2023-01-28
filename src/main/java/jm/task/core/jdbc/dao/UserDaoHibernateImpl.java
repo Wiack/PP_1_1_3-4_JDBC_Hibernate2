@@ -2,6 +2,7 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -26,6 +27,8 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
             session.beginTransaction();
             session.createSQLQuery(create).executeUpdate();
             session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
 
     }
@@ -36,6 +39,8 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
             session.beginTransaction();
             session.createSQLQuery(drop).executeUpdate();
             session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
 
     }
@@ -47,7 +52,8 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
             Transaction transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
-
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
 
     }
@@ -58,15 +64,21 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
             session.beginTransaction();
             session.createNativeQuery(remove).setParameter("id", id).executeUpdate();
             session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
 
     }
 
     @Override
     public List<User> getAllUsers() {
+        List<User> users = null;
         try (Session session = getSessionFactory().openSession()) {
-            return  session.createQuery("from User").getResultList();
+            users =  session.createQuery("from User").getResultList();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
+        return users;
     }
 
     @Override
@@ -75,6 +87,8 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
             session.beginTransaction();
             session.createSQLQuery(clean).executeUpdate();
             session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
 
     }
